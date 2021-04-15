@@ -34,8 +34,10 @@ const exchangeHeads = async (ipfs, address, peer, getStore, getDirectConnection,
   }
 
   // Wait for the direct channel to be fully connected
-  await channel.connect()
-  logger.debug(`Connected to ${peer}`)
+  if(!channel.connected) {
+    await channel.connect()
+    logger.debug(`Connected to ${peer}`)
+  }
 
   // Send the heads if we have any
   const heads = await getHeadsForDatabase(getStore(address))
